@@ -11,18 +11,39 @@ const stage = new Konva.Stage({
 const layer = new Konva.Layer();
 
 // create our shape
-const circle = new Konva.Circle({
-  x: stage.width() / 2,
-  y: stage.height() / 2,
-  radius: 70,
-  fill: 'red',
-  stroke: 'black',
-  strokeWidth: 4
+
+//Note : bezierCurveTo draw smooth curve line from curr point to new end point using 2 control points to decide curves
+const lemon = new Konva.Shape({
+    x : stage.width() / 2,
+    y: stage.height() / 2,
+    sceneFunc: function(context, shape){
+        //Start 'pencil' 
+        context.beginPath();
+        context.moveTo(20, 100);
+        context.bezierCurveTo(50, 20, 150, 20, 200, 100);
+        context.bezierCurveTo(150, 180, 50, 180, 20, 100);
+        context.closePath();   
+        context.fillStrokeShape(shape);
+    },
+    fill: '#F9D342',
+    stroke: '#030303',
+    strokeWidth: 4,
 });
 
-// add the shape to the layer
-layer.add(circle);
 
+lemon.on("mouseenter", function(e){
+    document.body.style.cursor = 'pointer';
+    this.strokeWidth(8);
+});
+
+lemon.on('mouseleave', function () {
+  document.body.style.cursor = 'default';
+  this.strokeWidth(4);
+});
+
+lemon.draggable(true);
+
+// add the shape to the layer
+layer.add(lemon)
 // add the layer to the stage
 stage.add(layer);
-
