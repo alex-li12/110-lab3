@@ -60,15 +60,9 @@ lemon.on('mouseleave', function () {
   this.strokeWidth(4);
 });
 
-
-lemon.on('dragstart', function(){
-    // anim.start();
-});
-
 lemon.on("mousedown", function(){
     scaleUp.play();
     wiggleAnimation.start();
-    // anim.start();
 });
 
 lemon.on('mouseup dragend', function(){
