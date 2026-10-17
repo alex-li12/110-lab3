@@ -9,6 +9,8 @@ const stage = new Konva.Stage({
 
 // then create layer
 const layer = new Konva.Layer();
+stage.add(layer);
+
 
 // create our shape
 
@@ -31,19 +33,53 @@ const lemon = new Konva.Shape({
 });
 
 
-lemon.on("mouseenter", function(e){
-    document.body.style.cursor = 'pointer';
+
+const angularSpeed = 90;
+const anim = new Konva.Animation(function(frame) {
+const angleDiff = (frame.timeDiff * angularSpeed) / 1000;
+lemon.rotate(angleDiff);
+}, layer);
+
+const scaleUp = new Konva.Tween({
+    node: lemon, 
+    duration: 2,
+    scaleX: 1.5,
+    scaleY: 1.5,
+    easing: Konva.Easings.EaseInOut
+});
+
+
+lemon.on("mouseover", function(){
+    stage.container().style.cursor = 'pointer';
     this.strokeWidth(8);
 });
 
 lemon.on('mouseleave', function () {
-  document.body.style.cursor = 'default';
+  stage.container().style.cursor = 'default';
   this.strokeWidth(4);
 });
+
+
+lemon.on('dragstart', function(){
+    // anim.start();
+});
+
+lemon.on("mousedown", function(){
+    scaleUp.play();
+    // anim.start();
+});
+
+lemon.on('mouseup dragend', function(){
+    scaleUp.reverse();
+    
+});
+
+
+
 
 lemon.draggable(true);
 
 // add the shape to the layer
-layer.add(lemon)
+
 // add the layer to the stage
-stage.add(layer);
+layer.add(lemon)
