@@ -9,6 +9,8 @@ const stage = new Konva.Stage({
 
 // then create layer
 const layer = new Konva.Layer();
+
+// add the shape to the layer
 stage.add(layer);
 
 
@@ -34,11 +36,10 @@ const lemon = new Konva.Shape({
 
 
 
-const angularSpeed = 90;
-const anim = new Konva.Animation(function(frame) {
-const angleDiff = (frame.timeDiff * angularSpeed) / 1000;
-lemon.rotate(angleDiff);
+const wiggleAnimation = new Konva.Animation((frame) => {
+  lemon.rotation(Math.sin(frame.time / 50) * 4);
 }, layer);
+
 
 const scaleUp = new Konva.Tween({
     node: lemon, 
@@ -66,11 +67,13 @@ lemon.on('dragstart', function(){
 
 lemon.on("mousedown", function(){
     scaleUp.play();
+    wiggleAnimation.start();
     // anim.start();
 });
 
 lemon.on('mouseup dragend', function(){
     scaleUp.reverse();
+    wiggleAnimation.stop();
     
 });
 
@@ -79,7 +82,7 @@ lemon.on('mouseup dragend', function(){
 
 lemon.draggable(true);
 
-// add the shape to the layer
+
 
 // add the layer to the stage
 layer.add(lemon)
